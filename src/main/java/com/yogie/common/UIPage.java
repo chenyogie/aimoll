@@ -1,6 +1,5 @@
 package com.yogie.common;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -9,10 +8,10 @@ import java.util.List;
  * @program: aimoll
  * @Date: 2019/7/6 14:15
  * @Author: Chenyogie
- * @Description: 这个类主要是根据前端easyui分页插件传递请求的参数
+ * @Description: 这个类主要是根据前端easyui分页插件接收的参数设计
  */
 
-public class UIPage {
+public class UIPage<T> {
 
     /**
      * 总记录数
