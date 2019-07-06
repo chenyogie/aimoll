@@ -1,6 +1,12 @@
-#title{
-    font-size: xx-large;
-    font-family: "Microsoft YaHei UI";
-    line-height: 100px;
-    margin: 0 auto;
+#beau_title{
+    /*margin: 0 auto;*/
+    border: 0px;
+    width: 800px;
+    height:100px;
+    /*line-height: 80px;
+    font-size: 50px;*/
+    /*background-color: red;*/
+    background-image: url("/images/main/main_title_small.png");
+    background-repeat: no-repeat;
+    background-color: #2E2D51;
 }

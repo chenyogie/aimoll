@@ -8,12 +8,12 @@
 <html>
 <head>
     <title>main.jsp</title>
-    <%--<link href="/css/main.css">--%>
     <%@include file="head.jsp" %>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body class="easyui-layout" fit="true">
-<div data-options="region:'north',split:true" style="height:100px;">
-    <div id="title"><h1>超级社区智能商城</h1></div>
+<div id="beau_title" data-options="region:'north',split:true">
+    <%--超级社区智能商城--%>
 </div>
 <div data-options="region:'west',title:'West',split:true" style="width:230px;">
     <ul id="treeMenu"></ul>
@@ -32,18 +32,18 @@
             url: "/josn/treeMenu.json",
             onClick: function (node) {
                 /*如果节点没有url，那么就是父节点，不需要开启一个选项卡*/
-                if(!node.url)
+                if (!node.url)
                     return;
                 /*如果节点对应的选项卡已经被打开，选中即可*/
-                if(mainTabs.tabs("exists",node.text)){
-                    mainTabs.tabs("select",node.text);
+                if (mainTabs.tabs("exists", node.text)) {
+                    mainTabs.tabs("select", node.text);
                     return;
                 }
                 /*新建选项卡，*/
-                mainTabs.tabs("add",{
-                    title:node.text,
-                    content:node.text,
-                    closable:true
+                mainTabs.tabs("add", {
+                    title: node.text,
+                    closable: true,
+                    content: '<iframe src="/employee/index" height="100%" width="100%" scrolling="auto"></iframe>'
                 });
             }
         });
