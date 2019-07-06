@@ -26,11 +26,13 @@
     </properties>
     <dependencies>
         <!-- Spring的支持包 -->
+        <!--spring核心包-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--spring上下文包-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -41,27 +43,31 @@
             <artifactId>spring-context-support</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
-
+        <!--spring事务-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--spring-jdbc支持-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--spring对象关系映射-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--切面-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--spring测试-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -74,6 +80,7 @@
             <artifactId>spring-web</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!--springmvc包-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -113,6 +120,7 @@
             <artifactId>hibernate-core</artifactId>
             <version>${org.hibernate.version}</version>
         </dependency>
+        <!--hibernate对jpa的支持-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -137,19 +145,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--数据库连接池dbcp-->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
         </dependency>
-
+        <!--数据库驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.46</version>
         </dependency>
-
+        <!--apache对java.lang的增强包-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -162,6 +170,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!--servlet-api支持-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -205,7 +214,7 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.4.0</version>
         </dependency>
-        <!-- poi支持的jar包 -->
+        <!-- poi支持的jar包（导出导入excel） -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
