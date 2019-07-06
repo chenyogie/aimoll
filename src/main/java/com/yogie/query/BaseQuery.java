@@ -40,6 +40,41 @@ public abstract class BaseQuery {
         return currentPage -1 ;
     }
 
+    /**
+     * 解决前台参数与后台参数不一致的方案
+     * @param page 分页查询当前页
+     */
+    public void setPage(Integer page){
+        this.currentPage = page;
+    }
+
+    /**
+     * 解决前台参数与后台参数不一致的方案
+     * @param rows 分页查询的每页数据容量
+     */
+    public void setRowS(Integer rows){
+        this.pageSize = rows;
+    }
+
+    /**
+     * 解决前台参数与后台参数不一致的方案
+     * 排序查询
+     * @param sort 排序的字段
+     */
+    public void setSort(String sort){
+        this.orderName = sort;
+    }
+
+    /**
+     *解决前台参数与后台参数不一致的方案
+     * 排序查询
+     * @param order 排序的类型
+     */
+    public void setOrder(String order){
+        this.orderType = order.toUpperCase();
+    }
+
+
     public void setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
     }
@@ -67,4 +102,5 @@ public abstract class BaseQuery {
     public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
+
 }

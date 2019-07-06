@@ -1,7 +1,6 @@
 package com.yogie.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @program: aimoll
@@ -16,7 +15,11 @@ public class Employee extends BaseDomain {
     private String username;
     private String password;
     private String email;
+    private String headImage;
     private Integer age;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public String getUsername() {
         return username;
@@ -50,13 +53,31 @@ public class Employee extends BaseDomain {
         this.age = age;
     }
 
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", headImage='" + headImage + '\'' +
                 ", age=" + age +
+                ", department=" + department +
                 ", id=" + id +
                 '}';
     }
