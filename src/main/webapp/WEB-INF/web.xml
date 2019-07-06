@@ -18,6 +18,17 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- 配置过滤器: 让EntityManager对象在我的jsp页面显示完毕后再关闭-->
+  <!--解决懒加载问题-->
+  <filter>
+    <filter-name>OpenEntityManagerInViewFilter</filter-name>
+    <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>OpenEntityManagerInViewFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <!--启动spring监听器，这个监听器回去默认加载一个配置文件：[/WEB-INF/applicationContext.xml]-->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

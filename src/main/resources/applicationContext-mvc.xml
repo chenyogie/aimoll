@@ -15,8 +15,25 @@
     <!--扫描controller-->
     <context:component-scan base-package="com.yogie.web.controller"/>
 
-    <!--支持springmvc的注解-->
-    <mvc:annotation-driven/>
+    <!-- 添加mvc对@RequestMapping等注解的支持 -->
+    <!-- Spring MVC 配置 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json; charset=UTF-8</value>
+                        <value>application/x-www-form-urlencoded; charset=UTF-8</value>
+                    </list>
+                </property>
+                <!-- No serializer:配置 objectMapper 为我们自定义扩展后的 CustomMapper,解决了返回对象有关系对象的报错问题 -->
+                <property name="objectMapper">
+                    <bean class="com.yogie.common.CustomMapper"></bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
 
     <!--静态资源放行-->
     <mvc:default-servlet-handler/>
@@ -27,6 +44,16 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <!--配置后缀-->
         <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 错误：提示告诉开发者你没有配置文件上传解析器。
+        这个必需叫这个名称：multipartResolver
+    -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为1MB -->
+        <property name="maxUploadSize">
+            <value>1048576</value>
+        </property>
     </bean>
 
 </beans>
