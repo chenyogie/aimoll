@@ -9,4 +9,5 @@ import com.yogie.domain.Employee;
  * @Description:
  */
 public interface IEmployeeService extends IBaseService<Employee,Long> {
+    Boolean checkName(String username);
 }
