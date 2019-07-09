@@ -10,28 +10,33 @@
     <%--自定义的js要在head.jsp后引入，因为head.jsp中有jquery的引入,自定义的js如果要使用jquey，就需要之后引入--%>
     <script src="/js/model/dept.js"></script>
     <%--引入easyui扩展库--%>
-    <link rel="stylesheet" href="http://www.easyui-extlib.com/Content/icons/icon-standard.css" />
-    <link rel="stylesheet" href="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.css" />
+    <link rel="stylesheet" href="http://www.easyui-extlib.com/Content/icons/icon-standard.css"/>
+    <link rel="stylesheet"
+          href="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.css"/>
     <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/menu/jeasyui.extensions.menu.js"></script>
     <script src="http://www.easyui-extlib.com//Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.getColumnInfo.js"></script>
     <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.columnToggle.js"></script>
 
     <style>
-        #editForm table tr td{
+        #editForm table tr td {
             padding: 3px;
         }
-        .datagrid-row-selected{
-            background-color:#0092DC;
+
+        .datagrid-row-selected {
+            background-color: #0092DC;
         }
     </style>
 </head>
 <body oncontextmenu="doNothing()">
 <table id="deptGrid" class="easyui-datagrid" fit="true"
+       data-options="url:'/dept/findPage',fitColumns:true,
+       singleSelect:false,checkOnSelect:true,onRowContextMenu:showMenu,
+       pagination:true,toolbar:'#gridTolls',enableHeaderClickMenu:'true'">
     <thead>
         <tr>
             <th data-options="field:'',checkbox:true,width:50,checkbox:true" align="center"></th>
-                                            <th data-options="field:'name',width:100" align="center">name</th>
-                    </tr>
+            <th data-options="field:'name',width:100" align="center">name</th>
+        </tr>
     </thead>
 </table>
 <%--datagrid顶部工具栏--%>
@@ -55,16 +60,16 @@
         <%--当修改的时候，把id传到后台--%>
         <input id="deptId" type="hidden" name="id">
         <table>
-                        <tr>
-            <td>
-                <label>name:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="name"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                </table>
+            <tr>
+                <td>
+                    <label>name:</label>
+                </td>
+                <td>
+                    <input class="easyui-validatebox" type="text" name="name"
+                           data-options="required:true"/>
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 <div id="editBtn">
