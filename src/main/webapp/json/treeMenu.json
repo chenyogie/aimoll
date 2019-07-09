@@ -8,5 +8,14 @@
   },{
     "text":"部门管理",
     "url":"/department/index"
+  },{
+    "text":"人事管理",
+    "url":"/person/index"
+  },{
+    "text":"财务管理",
+    "url":"/money/index"
+  },{
+    "text":"公车管理",
+    "url":"/car/index"
   }]
 }]

@@ -1,4 +1,8 @@
-//阻止浏览器原有的右键菜单弹出
+/**
+ * User: Chenyogie
+ * Date: 
+**/
+ //阻止浏览器原有的右键菜单弹出
 function doNothing() {
     window.event.returnValue = false;
     return false;
@@ -14,7 +18,7 @@ function imgFormat(value, row, index) {
 
 function showMenu(e, index, row) {
     //选中这个行
-    $("#employeeGrid").datagrid("selectRow", index);
+    $("#deptGrid").datagrid("selectRow", index);
     //第0个位置的面板不支持相应功能
     e.preventDefault();
     $('#gridMenu').menu('show', {
@@ -42,44 +46,6 @@ function showMenu(e, index, row) {
     });
 }
 
-//自定义验证(验证用户名是否可用)
-$.extend($.fn.validatebox.defaults.rules, {
-    //验证的名称
-    checkName: {
-        /**
-         * 自定义验证
-         * @param value 文本框中的值
-         * @param param 调用验证传过来的数组
-         */
-        validator: function (value, param) {
-            //发送ajax请求到后台验证
-            /*$.ajax({
-                sync:false,
-                type:'get',
-                url:'/employee/checkName',
-                data:{'username':value},
-                dataType:'json',
-                success:function (data) {
-                    console.log("data:"+data);
-                    //函数内部不能读取外部的值
-                    //因为闭包
-                    result = data;
-                }
-            });*/
-            //从隐藏域拿到employeeId
-            let $employeeId = $("#employeeId").val();
-            let result = $.ajax({
-                url: "/employee/checkName",
-                data: {username: value, id: $employeeId},
-                async: false //false就是同步
-            }).responseText;
-            return JSON.parse(result);
-        },
-        //如果被占用的提示
-        message: '此用户名已被占用，请重新命名！'
-    }
-})
-
 $(function () {
 
     /*为每一个带有data-method属性的a标签绑定click事件*/
@@ -91,9 +57,9 @@ $(function () {
     });
 
     /*拿到常用的组件*/
-    let employeeGrid = $("#employeeGrid");
+    let deptGrid = $("#deptGrid");
     let searchForm = $("#searchForm");
-    let employeeDialog = $("#employeeDialog");
+    let deptDialog = $("#deptDialog");
     let editForm = $("#editForm");
 
     /*方法的定义*/
@@ -103,11 +69,11 @@ $(function () {
             $("*[data-edit] input").validatebox("enable");
             //先清空
             editForm.form("clear");
-            employeeDialog.dialog("center").dialog("open");
+            deptDialog.dialog("center").dialog("open");
         },
         del() {//多行删除
-            /*let row = employeeGrid.datagrid("getSelected");*/
-            let rows = employeeGrid.datagrid("getSelections");
+            /*let row = deptGrid.datagrid("getSelected");*/
+            let rows = deptGrid.datagrid("getSelections");
             //如果用户没有选中行
             if (!rows) {
                 $.messager.alert("警告", "请至少选中一行数据再删除！", "warning");
@@ -117,9 +83,9 @@ $(function () {
                 $.messager.confirm('确认', `您确认想要删除这${rows.length}条记录吗？`, function (r) {
                     if (r) {
                         for (let i = 0; i < rows.length; i++) {
-                            $.get('/employee/delete', {id: rows[i].id}, function (result) {
+                            $.get('/dept/delete', {id: rows[i].id}, function (result) {
                                 if (result.success) {
-                                    employeeGrid.datagrid("reload");
+                                    deptGrid.datagrid("reload");
                                 } else {
                                     $.messager.alert("错误", "删除失败，原因：+" + result.msg, "error")
                                 }
@@ -132,10 +98,10 @@ $(function () {
             }
         },
         save() {
-            let url = "/employee/save";
-            let $employeeId = $("#employeeId").val();
-            if ($employeeId) {
-                url = "/employee/update?cmd=_update";
+            let url = "/dept/save";
+            let $deptId = $("#deptId").val();
+            if ($deptId) {
+                url = "/dept/update?cmd=_update";
             }
             editForm.form('submit', {
                 url: url,
@@ -148,7 +114,7 @@ $(function () {
                     let result = JSON.parse(data);
                     if (result.success) {
                         //如果保存成功，就重新加载数据
-                        employeeGrid.datagrid("reload");
+                        deptGrid.datagrid("reload");
                     } else {
                         //没有保存成功的话，就提示用户
                         $.messager.alert('错误', `保存失败，原因是:${result.msg}`, 'error');
@@ -158,7 +124,7 @@ $(function () {
             });
         },
         update() {
-            let row = employeeGrid.datagrid("getSelected");
+            let row = deptGrid.datagrid("getSelected");
             //如果用户没有选中行
             if (!row) {
                 $.messager.alert("警告", "请选中一行数据再修改！", "warning");
@@ -175,7 +141,7 @@ $(function () {
                 }
                 //数据回显
                 editForm.form("load", row);
-                employeeDialog.dialog("center").dialog("open");
+                deptDialog.dialog("center").dialog("open");
             }
         },
         search() {
@@ -184,20 +150,20 @@ $(function () {
              * 功能就是拿到一个form表单中的所有数据，（根据name属性）封装成json对象
              */
             let params = searchForm.serializeObject();
-            employeeGrid.datagrid("load", params);/*重新加载数据（重新发送请求）*/
+            deptGrid.datagrid("load", params);/*重新加载数据（重新发送请求）*/
         },
         close() {
-            employeeDialog.dialog("close");
+            deptDialog.dialog("close");
         }
     };
 
     /**
      * 双击单元格的时候，直接编辑该单元格的字段的内容
      */
-    employeeGrid.datagrid({
+    deptGrid.datagrid({
         onDblClickCell:function (index, field, value) {
-            employeeGrid.datagrid('beginEdit', index);
-            let ed = employeeGrid.datagrid('getEditor', {index:index,field:field});
+            deptGrid.datagrid('beginEdit', index);
+            let ed = deptGrid.datagrid('getEditor', {index:index,field:field});
             $(ed.target).focus();
         }
         /*//双击行的时候修改当前条数据
@@ -213,7 +179,7 @@ $(function () {
             }
             //数据回显
             editForm.form("load", row);
-            employeeDialog.dialog("center").dialog("open");
+            deptDialog.dialog("center").dialog("open");
         }*/
     });
 
