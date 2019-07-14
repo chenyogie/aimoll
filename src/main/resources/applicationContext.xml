@@ -58,4 +58,5 @@
                       entity-manager-factory-ref="entityManagerFactory"
                       factory-class="com.yogie.repository.BaseRepositoryFactoryBean"
     />
+    <import resource="classpath:applicationContext-shiro.xml" />
 </beans>

@@ -28,4 +28,9 @@ public class DeptRepositoryTest {
         dept.setName("new");
         deptRepository.save(dept);
     }
+
+    @Test
+    public void test(){
+        System.out.println("解决中文乱码问题");
+    }
 }

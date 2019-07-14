@@ -6,8 +6,8 @@
     "text":"用户管理",
     "url":"/employee/index"
   },{
-    "text":"部门管理",
-    "url":"/department/index"
+    "text":"角色管理",
+    "url":"/role/index"
   },{
     "text":"人事管理",
     "url":"/person/index"

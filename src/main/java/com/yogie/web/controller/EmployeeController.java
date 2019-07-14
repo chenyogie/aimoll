@@ -45,11 +45,19 @@ public class EmployeeController {
         return new UIPage(page);
     }
 
+    /**
+     * 假删除，删除就是改变一下状态即可
+     * 将这个员工放入回收站即可
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete")
     @ResponseBody
     public JsonResult delete(Long id) {
         try {
-            employeeService.delete(id);
+            Employee employee = employeeService.findOne(id);
+            employee.setStatus(false);
+            employeeService.save(employee);
             return new JsonResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,6 +137,43 @@ public class EmployeeController {
         }
         //如果id为空的话，就是在新增数据，这个时候正常验证
         return employeeService.checkName(username);
+    }
+
+    /**
+     * 查询回收站的所有员工
+     * @return
+     */
+    @RequestMapping("/recycle")
+    @ResponseBody
+    public List<Employee> recycle(){
+        EmployeeQuery query = new EmployeeQuery();
+        //设置查询禁用的用户
+        query.setStatus(false);
+        List<Employee> list = employeeService.findByQuery(query);
+        return list;
+    }
+
+    /**
+     * 恢复员工，使得员工变得可用状态
+     * @param id
+     * @return
+     */
+    @RequestMapping("/recover")
+    @ResponseBody
+    public JsonResult recover(Long id) {
+        try {
+            //根据id查询对应的员工
+            Employee employee = employeeService.findOne(id);
+            //将状态设置为可用状态
+            employee.setStatus(true);
+            //保存修改
+            employeeService.save(employee);
+            return new JsonResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, e.getMessage());
+        }
+
     }
 
 }

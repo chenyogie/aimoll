@@ -12,6 +12,10 @@ function imgFormat(value, row, index) {
     return `<img src='${value}' alt='无图片' width="50px" height="50px"/>`;
 }
 
+function statusFormat(value, row, index) {
+    return value ? "否" : "是";
+}
+
 function showMenu(e, index, row) {
     //选中这个行
     $("#employeeGrid").datagrid("selectRow", index);
@@ -121,7 +125,7 @@ $(function () {
                                 if (result.success) {
                                     employeeGrid.datagrid("reload");
                                 } else {
-                                    $.messager.alert("错误", "删除失败，原因：+" + result.msg, "error")
+                                    $.messager.alert("错误", "删除失败，原因：" + result.msg, "error")
                                 }
                                 //关闭对话框
                                 mymethod.close();
@@ -195,12 +199,12 @@ $(function () {
      * 双击单元格的时候，直接编辑该单元格的字段的内容
      */
     employeeGrid.datagrid({
-        onDblClickCell:function (index, field, value) {
+        onDblClickCell: function (index, field, value) {
             employeeGrid.datagrid('beginEdit', index);
-            let ed = employeeGrid.datagrid('getEditor', {index:index,field:field});
+            let ed = employeeGrid.datagrid('getEditor', {index: index, field: field});
             $(ed.target).focus();
-        }
-        /*//双击行的时候修改当前条数据
+        }/*,
+        //双击行的时候修改当前条数据
         onDblClickRow: function (index, row) {
             editForm.form("clear");
             //禁用密码框，并让其失效
@@ -231,9 +235,49 @@ $(function () {
                 break;
         }
     });
-    //绑定相应的事件 : 与右键菜单冲突
-    /*$("body").bind('keydown', 'del', window.mymethod.del);
-    $(document).bind('keydown', 'Shift+1', window.mymethod.add);
-    $(document).bind('keydown', 'Shift+2', window.mymethod.update);*/
 
+    //给回收站图标绑定事件
+    $("#recycle").bind("click", function () {
+        //点击打开dialog的时候就刷新数据
+        $("#recycleGrid").datagrid("load");
+        $("#recycleDialog").dialog({
+            title: '回收站',
+            width: 1000,
+            height: 350,
+            closed: false,
+            cache: false,
+            modal: true,
+            openAnimation: "show",
+            toolbar: [{
+                text: '解除禁用',
+                iconCls: 'icon-edit',
+                handler: function () {
+                    let rows = $("#recycleGrid").datagrid("getSelections");
+                    //如果用户没有选中行
+                    if (!rows) {
+                        $.messager.alert("警告", "请至少选中一行数据再进行操作！", "warning");
+                        return;
+                    } else {
+                        /*如果已经选中，提示是否确认进行删除操作*/
+                        $.messager.confirm('确认', `您确认想要恢复这${rows.length}条记录吗？`, function (r) {
+                            if (r) {
+                                for (let i = 0; i < rows.length; i++) {
+                                    $.get('/employee/recover', {id: rows[i].id}, function (result) {
+                                        if (result.success) {
+                                            $("#recycleGrid").datagrid("reload");
+                                            employeeGrid.datagrid("reload");
+                                        } else {
+                                            $.messager.alert("错误", "恢复失败，原因：" + result.msg, "error")
+                                        }
+                                        //关闭对话框
+                                        $("#recycleDialog").dialog("close");
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            }]
+        });
+    });
 });

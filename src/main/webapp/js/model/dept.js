@@ -87,7 +87,7 @@ $(function () {
                                 if (result.success) {
                                     deptGrid.datagrid("reload");
                                 } else {
-                                    $.messager.alert("错误", "删除失败，原因：+" + result.msg, "error")
+                                    $.messager.alert("错误", "删除失败，原因：" + result.msg, "error")
                                 }
                                 //关闭对话框
                                 mymethod.close();

@@ -10,4 +10,5 @@ import com.yogie.domain.Employee;
  */
 public interface IEmployeeService extends IBaseService<Employee,Long> {
     Boolean checkName(String username);
+    Employee findByUsername(String username);
 }

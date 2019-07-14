@@ -1,12 +1,15 @@
 package com.yogie.service;
 
+
+
 import com.yogie.domain.Department;
 
 /**
- * @program: aimoll
- * @Date: 2019/7/6 22:04
- * @Author: Chenyogie
- * @Description:
+ * (Department)实体类
+ *
+ * @author Chenyogie
+ * @since 2019-07-13 22:22:39
  */
+
 public interface IDepartmentService extends IBaseService<Department,Long> {
 }

@@ -14,7 +14,9 @@ import java.util.List;
 public interface EmployeeRepository extends BaseRepository<Employee,Long>{
 
     Employee findByUsername(String username);
+
     List<Employee> findByUsernameLikeAndEmailLike(String username,String email);
+
     List<Employee> findByAgeGreaterThan(Integer age);
 
     /**

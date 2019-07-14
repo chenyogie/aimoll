@@ -5,6 +5,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%--映入shiro的标签--%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <title>main.jsp</title>
@@ -14,6 +16,12 @@
 <body class="easyui-layout" fit="true" oncontextmenu="doNothing()">
 <div id="beau_title" data-options="region:'north',split:true">
     <%--超级社区智能商城--%>
+    <div style="color: white;text-align: right;padding-right: 30px;">
+        <%--
+            principal:目前存放的是用户名
+        --%>
+        <h6>欢迎您，<shiro:principal property="username"/><a href="/logout">注销</a></h6>
+    </div>
 </div>
 <div data-options="region:'west',title:'菜单选项',split:true" style="width:230px;">
     <ul id="treeMenu"></ul>
@@ -43,7 +51,7 @@
         let mainTabs = $("#mainTabs");
 
         $('#treeMenu').tree({
-            url: "/json/treeMenu.json",
+            url: "/util/findMenusByUser",
             onClick: function (node) {
                 /*如果节点没有url，那么就是父节点，不需要开启一个选项卡*/
                 if (!node.url)
@@ -77,7 +85,6 @@
                     left: leftx,
                     top: lefty,
                     onClick: function (item) {
-                        console.log(item)
                         switch (item.id) {
                             case "1":
                                 closeSelf(index);
@@ -91,29 +98,6 @@
             }
         });
     });
-
-    // function showTabMenu(e,title,index) {
-    //     //第0个位置的面板不支持相应功能
-    //     e.preventDefault();
-    //     if(index==0)return;
-    //     $('#tabMenu').menu('show', {
-    //         left: e.pageX,
-    //         top: e.pageY,
-    //         onClick:function(item){
-    //             if(item.id == 1){
-    //                 $('#mainTabs').tabs('close', index);
-    //             }else if(item.id == 2){
-    //                 let tabs = $('#mainTabs').tabs('tabs');
-    //                 //第0个位置的面板不关闭
-    //                 for(let i=1;i<=tabs.length;i++){
-    //                     //注意，这时永远关掉第一个面板
-    //                     $('#mainTabs').tabs('close', 1);
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
 
     //关闭本选项卡
     function closeSelf(index) {

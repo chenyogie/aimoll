@@ -1,6 +1,8 @@
 package com.yogie.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: aimoll
@@ -17,9 +19,24 @@ public class Employee extends BaseDomain {
     private String email;
     private String headImage;
     private Integer age;
+    private Boolean status;//true：代表可用；false：代表禁用
+
+    /**
+     * 员工与部门之间的关系是多对一
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    /**
+     * 员工与权限之间的关系是多对多
+     * @return
+     */
+    @ManyToMany
+    @JoinTable(name = "employee_role",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -67,6 +84,22 @@ public class Employee extends BaseDomain {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class EmployeeQuery extends BaseQuery {
     private String email;
     private Integer age;
     private Long department_id;
+    private Boolean status = true; //默认为true，显示可用的账户
 
     /**
      * 创建query查询条件
@@ -28,6 +29,7 @@ public class EmployeeQuery extends BaseQuery {
          * Specifications:是com.github.wenhao.jpa插件的类
          */
         Specification<Employee> spec = Specifications.<Employee>and()
+                .eq(status!=null,"status",status)
                 .like(StringUtils.isNotBlank(username), "username", "%" + username + "%")
                 .like(StringUtils.isNotBlank(email), "email", "%" + email + "%")
                 .gt(age != null, "age", age)
@@ -66,5 +68,13 @@ public class EmployeeQuery extends BaseQuery {
 
     public void setDepartment_id(Long department_id) {
         this.department_id = department_id;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

@@ -1,12 +1,16 @@
 package com.yogie.repository;
 
+
+
 import com.yogie.domain.Department;
 
 /**
- * @program: aimoll
- * @Date: 2019/7/6 22:03
- * @Author: Chenyogie
- * @Description:
+ * (Department)实体类
+ *
+ * @author Chenyogie
+ * @since 2019-07-13 22:22:37
  */
-public interface DepartmentRepository extends BaseRepository<Department,Long> {
+
+public interface DepartmentRepository extends BaseRepository<Department,Long>{
+
 }
