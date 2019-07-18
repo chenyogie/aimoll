@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @program: aimoll
  * @Date: 2019/7/5 12:04
@@ -31,6 +33,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee,Long> implemen
         return employeeRepository.findByUsername(username);
     }
 
+
     /**
      * 在添加员工的时候，应该对密码进行加密
      * 但是在jpa中新增保存与修改调用的都是这个save方法，
@@ -45,5 +48,11 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee,Long> implemen
             employee.setPassword(password);
         }
         super.save(employee);
+    }
+
+
+    @Override
+    public List<Employee> findByDeptName(String deptName) {
+        return employeeRepository.findByDeptName(deptName);
     }
 }

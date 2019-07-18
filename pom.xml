@@ -245,6 +245,12 @@
             <artifactId>easypoi-annotation</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <!--jsr 303数据验证-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.2.4.Final</version>
+        </dependency>
 
         <!-- 图片压缩功能 -->
         <!-- 缩略图 -->

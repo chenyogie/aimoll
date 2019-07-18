@@ -31,3 +31,5 @@
 <script type="text/javascript" charset="utf-8" src="/easyui/plugin/validatebox/jeasyui.extensions.validatebox.rules.js"></script>
 <!-- jquery的按键扩展支持 -->
 <script type="text/javascript" src="/easyui/plugin/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/easyui/plugin/jeasyui.extensions.base.tooltip.js"></script>
+

@@ -1,6 +1,10 @@
 package com.yogie.domain;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +18,15 @@ import java.util.List;
 @Table(name = "employee")
 public class Employee extends BaseDomain {
 
+    @Excel(name = "用户名")
+    @NotNull(message = "用户名不能为空。")
     private String username;
     private String password;
+    @Excel(name = "邮箱",width = 25)
     private String email;
+    @Excel(name = "头像",type = 2,width = 10,height = 20)
     private String headImage;
+    @Excel(name = "年龄")
     private Integer age;
     private Boolean status;//true：代表可用；false：代表禁用
 
@@ -26,6 +35,7 @@ public class Employee extends BaseDomain {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
+    @ExcelEntity
     private Department department;
 
     /**

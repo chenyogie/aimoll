@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
 
@@ -14,6 +14,8 @@
 
     <!--扫描controller-->
     <context:component-scan base-package="com.yogie.web.controller"/>
+    <!--扫描配置easypoi支持springmvc的包：扫描easypoi中的结果视图-->
+    <context:component-scan base-package="cn.afterturn.easypoi.view"/>
 
     <!-- 添加mvc对@RequestMapping等注解的支持 -->
     <!-- Spring MVC 配置 -->
@@ -45,6 +47,8 @@
         <!--配置后缀-->
         <property name="suffix" value=".jsp"/>
     </bean>
+    <!--配置视图解析器：p:order="0"，首先找这个视图解析器，再找其他的-->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
 
     <!-- 错误：提示告诉开发者你没有配置文件上传解析器。
         这个必需叫这个名称：multipartResolver
@@ -52,7 +56,7 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- 设置上传文件的最大尺寸为1MB -->
         <property name="maxUploadSize">
-            <value>1048576</value>
+            <value>10485760000</value>
         </property>
     </bean>
 

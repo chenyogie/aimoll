@@ -17,6 +17,9 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="com.yogie.service"/>
+    <!--扫描easypoi验证的代码的包-->
+    <context:component-scan base-package="com.yogie.common"/>
+
 
     <context:property-placeholder location="classpath:db.properties"/>
 

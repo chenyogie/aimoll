@@ -1,5 +1,7 @@
 package com.yogie.domain;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+
 import javax.persistence.*;
 
 
@@ -13,7 +15,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "department")
 public class Department extends BaseDomain{
-    
+
+    @Excel(name = "部门名称")
     private String name;
     
     public String getName() {

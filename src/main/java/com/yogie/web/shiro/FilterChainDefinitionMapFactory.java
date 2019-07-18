@@ -34,6 +34,7 @@ public class FilterChainDefinitionMapFactory {
         map.put("/easyui/**","anon");
         map.put("/error/**","anon");
         map.put("/images/**","anon");
+        map.put("/upload/**","anon");
         map.put("/js/**","anon");
         map.put("/json/**","anon");
         map.put("*.js","anon");

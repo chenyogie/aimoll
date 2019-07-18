@@ -1,11 +1,8 @@
 package com.yogie.web.controller;
 
 import com.yogie.common.UserContext;
-import com.yogie.domain.Department;
-import com.yogie.domain.Employee;
-import com.yogie.domain.Menu;
-import com.yogie.service.IDepartmentService;
-import com.yogie.service.IMenuService;
+import com.yogie.domain.*;
+import com.yogie.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +26,21 @@ public class UtilController {
     @Autowired
     private IMenuService menuService;
 
+    @Autowired
+    private ISystemdictionarydetailService systemdictionarydetailService;
+
+    @Autowired
+    private IProducttypeService producttypeService;
+
+    @Autowired
+    private ISupplierService supplierService;
+
+    @Autowired
+    private IEmployeeService employeeService;
+
+    @Autowired
+    private IProductService productService;
+
     /**
      * @return 返回employee.jsp页面中搜索框的部门下拉框数据
      */
@@ -48,6 +60,56 @@ public class UtilController {
         Employee loginUser = UserContext.getUserInSession();
         List<Menu> list = menuService.findMenusByUserId(loginUser.getId());
         return list;
+    }
+
+    @RequestMapping("/findUnits")
+    @ResponseBody
+    public List<Systemdictionarydetail> findUnits(){
+        //根据字典：查找
+        List<Systemdictionarydetail> list =  systemdictionarydetailService.findAllUnitBySn();
+        return list;
+    }
+
+    @RequestMapping("/findBrands")
+    @ResponseBody
+    public List<Systemdictionarydetail> findBrands(){
+        //根据字典：查找
+        return systemdictionarydetailService.findAllBrandBySn();
+    }
+
+    @RequestMapping("/findTypeParent")
+    @ResponseBody
+    public List<Producttype> findTypeParent(){
+        //根据字典：查找
+        return producttypeService.findTypeParent();
+    }
+
+    @RequestMapping("/findTypeChildren")
+    @ResponseBody
+    public List<Producttype> findTypeChildren(Long id){
+        //根据字典：查找
+        return producttypeService.findTypeChildrenById(id);
+    }
+
+    @RequestMapping("/findAllSupplier")
+    @ResponseBody
+    public List<Supplier> findAllSupplier(){
+        //根据字典：查找
+        return supplierService.findAll();
+    }
+
+    @RequestMapping("/findBuyer")
+    @ResponseBody
+    public List<Employee> findBuyer(){
+        //根据字典：查找
+        return employeeService.findByDeptName("采购部");
+    }
+
+    @RequestMapping("/findProduct")
+    @ResponseBody
+    public List<Product> findProduct(){
+        //根据字典：查找
+        return productService.findAll();
     }
 
 }

@@ -40,4 +40,10 @@ public interface EmployeeRepository extends BaseRepository<Employee,Long>{
      */
     @Query("select count(o) from Employee  o where o.username=?1")
     Long getCountByUsername(String username);
+
+    /**
+     * 根据部门名称查找用户
+     */
+    @Query("select o from Employee o where o.department.name=?1")
+    List<Employee> findByDeptName(String deptName);
 }
