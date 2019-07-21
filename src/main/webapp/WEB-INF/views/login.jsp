@@ -31,13 +31,14 @@
             $("#submitBtn").on("click",function () {
                 let username = $("#username").val();
                 let password = $("#password").val();
+                let activeCode = $("#activeCode").val();
                 $.ajax({
                     type:"POST",
                     url:"/login",
                     async:false,
-                    data:{username:username,password:password},
+                    data:{username:username,password:password,activeCode:activeCode},
                     success:function (data) {
-                        console.log(data)
+                        //console.log(data)
                         if(data.success){
                             window.location.href="/main";
                         }else{
@@ -47,14 +48,17 @@
                 });
             });
         })
+        function changeImg(img){
+            img.src = img.src + "?/time=" + new Date().getTime();
+        }
     </script>
 </head>
 <body style="padding-top: 100px;">
 <div id="loginform">
     <div id="facebook">
-        <img id="wechatImg" src="/images/login/wechat.png" width="80px" height="80px">
+        <img id="wechatImg" src="/getImg" onclick="changeImg(this)" width="150px" height="40px">
         <!-- <i class="fa fa-facebook"></i> -->
-        <div id="connect">微信扫码登录</div>
+        <div id="connect">验证码</div>
     </div>
     <div id="mainlogin">
         <div id="or">or</div>
@@ -63,13 +67,15 @@
         <div>
             <input type="text" name="username" id="username" placeholder="username or email" value="admin" required>
             <input type="password" name="password" id="password" placeholder="password" value="admin" required>
+            <input type="text" name="activeCode" id="activeCode" placeholder="请输入验证码">
             <button id="submitBtn">
                 <i class="fa fa-arrow-right"></i>
             </button>
         </div>
         <%--</form>--%>
         <div id="note">
-            <a href="#">忘记密码?</a>
+            <%--<a href="#">忘记密码?</a>--%>
+            <a href="/turnToUpdatePassword">去修改密码</a>
         </div>
     </div>
 </div>
