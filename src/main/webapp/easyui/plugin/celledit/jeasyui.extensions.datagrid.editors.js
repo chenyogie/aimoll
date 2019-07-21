@@ -1,22 +1,22 @@
-﻿/**
-* jQuery EasyUI 1.4.3
-* Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
-*
-* Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
-* To use it on other terms please contact us at info@jeasyui.com
-* http://www.jeasyui.com/license_commercial.php
-*
-* jQuery EasyUI datagrid 组件扩展
-* jeasyui.extensions.datagrid.editors.js
-* 开发 流云
-* 由 落阳 整理和二次扩展
-* 最近更新：2015-12-03
-*
-* 依赖项：
-*   1、jquery.jdirk.js
-*
-* Copyright (c) 2015 ChenJianwei personal All rights reserved.
-*/
+/**
+ * jQuery EasyUI 1.4.3
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ *
+ * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
+ * To use it on other terms please contact us at info@jeasyui.com
+ * http://www.jeasyui.com/license_commercial.php
+ *
+ * jQuery EasyUI datagrid 组件扩展
+ * jeasyui.extensions.datagrid.editors.js
+ * 开发 流云
+ * 由 落阳 整理和二次扩展
+ * 最近更新：2015-12-03
+ *
+ * 依赖项：
+ *   1、jquery.jdirk.js
+ *
+ * Copyright (c) 2015 ChenJianwei personal All rights reserved.
+ */
 (function ($) {
 
     var editors = $.fn.datagrid.defaults.editors,
@@ -174,6 +174,22 @@
             var box = combobox_init.apply(this, arguments);
             box.combobox("textbox").addClass("datagrid-editable-input");
             return box;
+        },
+        getValue: function(target){
+            //return $(target).val();
+            // console.debug($(target).combobox('getText')) //拿到结束的数据值)
+            // //return $(target).combobox('getText');
+            // return $(target).val();
+            var id = $(target).val();
+            var value ={};
+            var data=a =$(target).combobox("getData");
+            for (var i = 0; i < data.length; i++) {
+                if(data[i].id == id){
+                    value = data[i];
+                    break;
+                }
+            }
+            return value;
         },
         setFocus: function (target) {
             $(target).combobox("textbox").focus();

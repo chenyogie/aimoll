@@ -1,23 +1,23 @@
-﻿/**
-* jQuery EasyUI 1.4.3
-* Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
-*
-* Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
-* To use it on other terms please contact us at info@jeasyui.com
-* http://www.jeasyui.com/license_commercial.php
-*
-* jQuery EasyUI datagrid 编辑器扩展-回车聚焦
-* jeasyui.extensions.datagrid.edit.cellEdit.js
-* 开发 落阳
-* 最近更新：2017-03-21
-*
-* 依赖项：
-*   1、jquery.jdirk.js
-*   2、jeasyui.extensions.datagrid.editors.js
-*   3、jeasyui.extensions.datagrid.getColumnInfo.js
-*
-* Copyright (c) 2015 ChenJianwei personal All rights reserved.
-*/
+/**
+ * jQuery EasyUI 1.4.3
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ *
+ * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
+ * To use it on other terms please contact us at info@jeasyui.com
+ * http://www.jeasyui.com/license_commercial.php
+ *
+ * jQuery EasyUI datagrid 编辑器扩展-回车聚焦
+ * jeasyui.extensions.datagrid.edit.cellEdit.js
+ * 开发 落阳
+ * 最近更新：2017-03-21
+ *
+ * 依赖项：
+ *   1、jquery.jdirk.js
+ *   2、jeasyui.extensions.datagrid.editors.js
+ *   3、jeasyui.extensions.datagrid.getColumnInfo.js
+ *
+ * Copyright (c) 2015 ChenJianwei personal All rights reserved.
+ */
 (function () {
 
     $.util.namespace("$.fn.datagrid.extensions");
@@ -109,12 +109,12 @@
             var jq = $(this),
                 isInited = $.data(this, "datagrid") ? true : false,
                 opts = isInited ? options : $.extend({},
-                        $.fn.datagrid.parseOptions(this),
-                        $.parser.parseOptions(this, [
-                            {
-                                enableCellEdit: "boolean"
-                            }
-                        ]), options);
+                    $.fn.datagrid.parseOptions(this),
+                    $.parser.parseOptions(this, [
+                        {
+                            enableCellEdit: "boolean"
+                        }
+                    ]), options);
             _datagrid.call(jq, opts, param);
             if (!isInited) {
                 initializeExtensions(this);

@@ -1,22 +1,22 @@
-﻿/**
-* jQuery EasyUI 1.4.3
-* Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
-*
-* Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
-* To use it on other terms please contact us at info@jeasyui.com
-* http://www.jeasyui.com/license_commercial.php
-*
-* jQuery EasyUI datagrid 组件扩展
-* jeasyui.extensions.datagrid.getColumnInfo.js
-* 开发 流云
-* 由 落阳 整理
-* 最近更新：2015-12-02
-*
-* 依赖项：
-*   1、jquery.jdirk.js
-*
-* Copyright (c) 2015 ChenJianwei personal All rights reserved.
-*/
+/**
+ * jQuery EasyUI 1.4.3
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ *
+ * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
+ * To use it on other terms please contact us at info@jeasyui.com
+ * http://www.jeasyui.com/license_commercial.php
+ *
+ * jQuery EasyUI datagrid 组件扩展
+ * jeasyui.extensions.datagrid.getColumnInfo.js
+ * 开发 流云
+ * 由 落阳 整理
+ * 最近更新：2015-12-02
+ *
+ * 依赖项：
+ *   1、jquery.jdirk.js
+ *
+ * Copyright (c) 2015 ChenJianwei personal All rights reserved.
+ */
 (function () {
 
     $.util.namespace("$.fn.datagrid.extensions");
