@@ -2,10 +2,11 @@ package com.yogie.web.controller;
 
 
 
-import java.math.BigDecimal;
 import com.yogie.common.JsonResult;
 import com.yogie.common.UIPage;
 import com.yogie.domain.Purchasebillitem;
+import com.yogie.domain.vo.ItemChartVo;
+import com.yogie.domain.vo.PurchaseBillItemVo;
 import com.yogie.query.PurchasebillitemQuery;
 import com.yogie.service.IPurchasebillitemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 
 /**
@@ -114,5 +116,17 @@ public class PurchasebillitemController {
             e.printStackTrace();
             return new JsonResult(false, e.getMessage());
         }
+    }
+
+    @RequestMapping("/findItems")
+    @ResponseBody
+    public List<PurchaseBillItemVo> findItems(PurchasebillitemQuery query) {
+        return purchasebillitemService.findItems(query);
+    }
+
+    @RequestMapping("/findCharts")
+    @ResponseBody
+    public List<ItemChartVo> findCharts(PurchasebillitemQuery query) {
+        return purchasebillitemService.findCharts(query);
     }
 }

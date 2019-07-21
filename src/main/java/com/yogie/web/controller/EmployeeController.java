@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -174,6 +175,23 @@ public class EmployeeController {
             return new JsonResult(false, e.getMessage());
         }
 
+    }
+
+    /**
+     * 删除用户时，验证验证码的正确性
+     * @param mailCode
+     * @param request
+     * @return
+     */
+    @RequestMapping("/validateCode")
+    @ResponseBody
+    public JsonResult validateCode(String mailCode, HttpServletRequest request){
+        String sessionCode = (String)request.getSession().getAttribute("mailCode");
+        System.out.println("SessionCode==="+sessionCode+",mailCode==="+mailCode);
+        if(!mailCode.equals(sessionCode)){
+            return new JsonResult(false,"验证码错误");
+        }
+        return new JsonResult();
     }
 
 }

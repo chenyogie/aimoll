@@ -28,6 +28,10 @@ public class FilterChainDefinitionMapFactory {
         Map<String,String> map = new LinkedHashMap<>();
         map.put("/index.jsp","anon");
         map.put("/login","anon");
+        //验证码放行
+        map.put("/getImg","anon");
+        map.put("/turnToUpdatePassword","anon");
+        map.put("/updatePassword","anon");
 
         //设置静态资源放行
         map.put("/css/**","anon");

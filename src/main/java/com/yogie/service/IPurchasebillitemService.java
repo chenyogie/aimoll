@@ -1,9 +1,12 @@
 package com.yogie.service;
 
 
-
-import java.math.BigDecimal;
 import com.yogie.domain.Purchasebillitem;
+import com.yogie.domain.vo.ItemChartVo;
+import com.yogie.domain.vo.PurchaseBillItemVo;
+import com.yogie.query.PurchasebillitemQuery;
+
+import java.util.List;
 
 /**
  * (Purchasebillitem)实体类
@@ -13,4 +16,10 @@ import com.yogie.domain.Purchasebillitem;
  */
 
 public interface IPurchasebillitemService extends IBaseService<Purchasebillitem,Long> {
+
+    //获取表格数据
+    List<PurchaseBillItemVo> findItems(PurchasebillitemQuery query);
+
+    //获取图表数据
+    List<ItemChartVo> findCharts(PurchasebillitemQuery query);
 }

@@ -6,6 +6,7 @@ import com.yogie.common.UIPage;
 import com.yogie.common.UserContext;
 import com.yogie.domain.Employee;
 import com.yogie.domain.PurchaseBill;
+import com.yogie.domain.Purchasebillitem;
 import com.yogie.query.PurchaseBillQuery;
 import com.yogie.service.IPurchaseBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -73,13 +75,10 @@ public class PurchaseBillController {
     public PurchaseBill beforeEdit(Long id, String cmd) {
         if (id != null && "_update".equals(cmd)) {
             PurchaseBill purchaseBill = purchaseBillService.findOne(id);
-            /**
-             * 这个方法的设计是为了解决当前台修改部门的时候，调教修改的时候会报错：n to n
-             * 这个错误的原因是：当修改部门的时候，实际上是修改的purchaseBill对应的持久化对象的department持久化对象的oid
-             * 解决办法就是：直接将员工关联的department对象设置为null
-             * 然后springmvc会根据前台的department.id自动创建一个非持久的department对象
-             */
-            //purchaseBill.setDepartment(null);
+            //把要传过来的关联对象都清空，就可以解决n-to-n的问题
+            purchaseBill.setSupplier(null);
+            purchaseBill.setBuyer(null);
+            purchaseBill.getItems().clear();
             return purchaseBill;
         }
         return null;
@@ -95,28 +94,40 @@ public class PurchaseBillController {
     @RequestMapping("/update")
     @ResponseBody
     public JsonResult update(@ModelAttribute("editPurchaseBill") PurchaseBill purchaseBill) {
-        try {
-            purchaseBillService.save(purchaseBill);
-            return new JsonResult();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new JsonResult(false, e.getMessage());
-        }
+        return saveOrUpdate(purchaseBill);
     }
 
 
     @RequestMapping("/save")
     @ResponseBody
     public JsonResult save(PurchaseBill purchaseBill) {
+        return saveOrUpdate(purchaseBill);
+    }
+
+    private JsonResult saveOrUpdate(PurchaseBill purchasebill){
         try {
-            //当前登录用户就是录入人员
-            Employee inputUser = UserContext.getUserInSession();
-            purchaseBill.setInputUser(inputUser);
-            purchaseBillService.save(purchaseBill);
-            return new JsonResult();
+            //拿到采购订单的所有明细
+            List<Purchasebillitem> items = purchasebill.getItems();
+            //准备总金额与总数量
+            BigDecimal totalamount = new BigDecimal("0");
+            BigDecimal totalnum = new BigDecimal("0");
+            for (Purchasebillitem item : items) {
+                //设置明细对应的订单
+                item.setBill(purchasebill);
+                //计算每一个明细的小计[decaimal类型的数值之间的计算需要通过调用方法来进行，具体查看jdk文档]
+                item.setAmount(item.getNum().multiply(item.getPrice()));
+                //总金额与总数量进行累加
+                totalamount = totalamount.add(item.getAmount());
+                totalnum = totalnum.add(item.getNum());
+            }
+            //把值设置到订单中去
+            purchasebill.setTotalamount(totalamount);
+            purchasebill.setTotalnum(totalnum);
+            purchaseBillService.save(purchasebill);
         } catch (Exception e) {
             e.printStackTrace();
-            return new JsonResult(false, e.getMessage());
+            return new JsonResult(false,e.getMessage());
         }
+        return new JsonResult();
     }
 }
