@@ -62,4 +62,5 @@
                       factory-class="com.yogie.repository.BaseRepositoryFactoryBean"
     />
     <import resource="classpath:applicationContext-shiro.xml" />
+    <import resource="classpath:plugin/applicationContext-mail.xml" />
 </beans>

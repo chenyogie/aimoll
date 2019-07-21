@@ -11,6 +11,9 @@
     -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="jdbcRealm"/>
+
+        <!--监听session-->
+        <property name="sessionManager" ref="sessionManager"/>
     </bean>
 
     <!-- 等会需要改成自己的Realm -->
@@ -77,4 +80,14 @@
 
     <!--自定义过滤器配置1：配置自定义过滤器-->
     <bean id="aiMollPerms" class="com.yogie.web.shiro.AimollPermissionsAuthorizationFilter"/>
+
+
+    <!--配置sessionDAO：操作shiro-session的对象-->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="sessionDAO"/>
+    </bean>
+
+
+
 </beans>
