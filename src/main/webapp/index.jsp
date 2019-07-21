@@ -3,6 +3,9 @@
 <meta charset="UTF-8">
 <body>
 <h1>首页</h1>
-<a href="/login">跳转到login界面</a>
+<script>
+    window.location.href="/login"
+</script>
+<%--<a href="/login">跳转到login界面</a>--%>
 </body>
 </html>
