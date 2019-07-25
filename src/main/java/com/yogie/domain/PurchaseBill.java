@@ -28,12 +28,12 @@ public class PurchaseBill extends BaseDomain{
     private BigDecimal totalamount;
     //总数量
     private BigDecimal totalnum;
-    //录入时间
-    private Date inputtime;
+    //录入时间:当前系统时间
+    private Date inputtime = new Date();
     //审核时间
     private Date auditortime;
-    //审核状态
-    private Integer status;
+    //审核状态:默认待审
+    private Integer status = 0;
 
     //供应商
     @ManyToOne

@@ -153,7 +153,6 @@ public class LoginController {
     }
 
     private int getRandomInt(int begin, int end) {
-
         return random.nextInt(end - begin) + begin;
     }
 

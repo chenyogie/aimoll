@@ -29,6 +29,7 @@ public class Employee extends BaseDomain {
     @Excel(name = "年龄")
     private Integer age;
     private Boolean status;//true：代表可用；false：代表禁用
+    private boolean firstln;//false:代表第一次登陆，强制修改密码
 
     /**
      * 员工与部门之间的关系是多对一
@@ -110,6 +111,14 @@ public class Employee extends BaseDomain {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isFirstln() {
+        return firstln;
+    }
+
+    public void setFirstln(boolean firstln) {
+        this.firstln = firstln;
     }
 
     @Override
