@@ -1,6 +1,8 @@
 package com.yogie.service.impl;
 
 
+import com.yogie.common.UserContext;
+import com.yogie.domain.Employee;
 import com.yogie.domain.PurchaseBill;
 import com.yogie.repository.PurchaseBillRepository;
 import com.yogie.service.IPurchaseBillService;
@@ -19,5 +21,15 @@ public class PurchaseBillServiceImpl extends BaseServiceImpl<PurchaseBill,Long> 
 
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;
+
+    @Override
+    public void save(PurchaseBill purchasebill) {
+        if(purchasebill.getId()==null){
+            //添加的时候，录入人就是当前登录用户
+            Employee loginUser = UserContext.getUserInSession();
+            purchasebill.setInputUser(loginUser);
+        }
+        super.save(purchasebill);
+    }
 
 }

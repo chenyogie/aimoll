@@ -56,7 +56,7 @@ button {
     height: 85px;
     position: absolute;
     right: -42px;
-    top: 54px;
+    top: 82px;
     text-align: center;
     -webkit-transition: 0.5s ease;
     -moz-transition: 0.5s ease;
@@ -131,9 +131,9 @@ h1 {
     text-align: center;
     float: left;
     background: #365195;
-    padding: 35px 10px 20px 10px;
+    padding: 80px 10px 20px 10px;
     width: 170px;
-    height: 135px;
+    height: 170px;
     border-radius: 3px;
     cursor: pointer;
     box-shadow: 0px 0px 10px 2px #161718;
@@ -183,7 +183,7 @@ a:hover {
 #mainlogin {
     float: left;
     width: 250px;
-    height: 170px;
+    height: 250px;
     padding: 10px 15px;
     position: relative;
     background: #555555;
@@ -197,7 +197,7 @@ a:hover {
     text-align: left;
     font-family: verdana;
     padding-top: 10px;
-    margin-left: 46px;
+    margin-left: 63px;
 }
 
 #or {
