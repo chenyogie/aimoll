@@ -94,7 +94,7 @@
             </td>
             <td>
                 <input class="easyui-validatebox" type="text" name="parentId"
-                      data-options="required:true"/>
+                      data-options=""/>
             </td>
         </tr>
                 </table>

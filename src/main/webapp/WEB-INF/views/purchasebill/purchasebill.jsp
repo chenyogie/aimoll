@@ -7,18 +7,18 @@
 <head>
     <title>purchasebill.jsp</title>
     <%@include file="../head.jsp" %>
-    <%--自定义的js要在head.jsp后引入，因为head.jsp中有jquery的引入,自定义的js如果要使用jquey，就需要之后引入--%>
-    <script src="/js/model/purchasebill.js"></script>
     <%--引入easyui扩展库--%>
     <link rel="stylesheet" href="http://www.easyui-extlib.com/Content/icons/icon-standard.css"/>
-    <link rel="stylesheet"
+    <%--<link rel="stylesheet"
           href="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.css"/>
     <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/menu/jeasyui.extensions.menu.js"></script>
     <script src="http://www.easyui-extlib.com//Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.getColumnInfo.js"></script>
-    <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.columnToggle.js"></script>
-    <script src="/easyui/plugin/jeasyui.extensions.datagrid.edit.cellEdit.js"></script>
-    <script src="/easyui/plugin/jeasyui.extensions.datagrid.editors.js"></script>
-    <script src="/easyui/plugin/jeasyui.extensions.datagrid.getColumnInfo.js"></script>
+    <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.columnToggle.js"></script>--%>
+    <script src="/easyui/plugin/celledit/jeasyui.extensions.datagrid.getColumnInfo.js"></script>
+    <script src="/easyui/plugin/celledit/jeasyui.extensions.datagrid.editors.js"></script>
+    <script src="/easyui/plugin/celledit/jeasyui.extensions.datagrid.edit.cellEdit.js"></script>
+    <%--自定义的js要在head.jsp后引入，因为head.jsp中有jquery的引入,自定义的js如果要使用jquey，就需要之后引入--%>
+    <script src="/js/model/purchasebill.js"></script>
     <style>
         #editForm table tr td {
             padding: 3px;
@@ -26,6 +26,10 @@
 
         .datagrid-row-selected {
             background-color: #0092DC;
+        }
+
+        .bodyCls {
+            min-height: 300px;
         }
     </style>
 </head>
@@ -37,17 +41,13 @@
     <thead>
     <tr>
         <th data-options="field:'',checkbox:true,width:50,checkbox:true" align="center"></th>
-
-        <th data-options="field:'buyer',width:100,formatter:objFormat" align="center">采购员</th>
         <th data-options="field:'vdate',width:100" align="center">交易时间</th>
-        <th data-options="field:'status',width:100,formatter:statusFormat" align="center">状态</th>
+        <th data-options="field:'buyer',width:100,formatter:objFormat" align="center">采购员</th>
         <th data-options="field:'supplier',width:100,formatter:objFormat" align="center">供应商</th>
         <th data-options="field:'totalamount',width:100" align="center">总金额</th>
         <th data-options="field:'totalnum',width:100" align="center">总数量</th>
+        <th data-options="field:'status',width:100,formatter:statusFormat" align="center">状态</th>
         <th data-options="field:'inputUser',width:100,formatter:objFormat" align="center">录入员</th>
-        <%--<th data-options="field:'inputtime',width:100" align="center">录入时间</th>--%>
-        <%--<th data-options="field:'auditortime',width:100" align="center">审核时间</th>--%>
-        <%--<th data-options="field:'auditor',width:100,formatter:objFormat" align="center">审核人</th>--%>
     </tr>
     </thead>
 </table>
@@ -75,6 +75,8 @@
         <a data-method="search" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
     </form>
 </div>
+
+
 <%--对话框--%>
 <div id="purchasebillDialog" class="easyui-dialog"
      style="width:600px;padding-left: 10px;padding-right: 10px;padding-top: 10px;"
@@ -107,15 +109,14 @@
             </tr>
         </table>
     </form>
+    <div id="editBtn">
+        <a data-method="save" href="#" class="easyui-linkbutton">保存</a>
+        <a data-method="close" href="#" class="easyui-linkbutton">关闭</a>
+    </div>
 </div>
-<%----%>
-<div id="itemBtns">
+<div id="itemsTools">
     <a id="btnInsert" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增一行</a>
     <a id="btnRemove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除一行</a>
-</div>
-<div id="editBtn">
-    <a data-method="save" href="#" class="easyui-linkbutton">保存</a>
-    <a data-method="close" href="#" class="easyui-linkbutton">关闭</a>
 </div>
 <div id="gridMenu" class="easyui-menu" style="width:80px;">
     <div data-options="iconCls:'icon-add'">添加</div>

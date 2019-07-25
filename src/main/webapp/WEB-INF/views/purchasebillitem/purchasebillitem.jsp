@@ -7,127 +7,53 @@
 <head>
     <title>purchasebillitem.jsp</title>
     <%@include file="../head.jsp" %>
+    <script src="/easyui/plugin/datagrid-groupview.js"></script>
+    <%--引入highcharts--%>
+    <script src="/js/highcharts/code/highcharts.js"></script>
+    <script src="/js/highcharts/code/highcharts-3d.js"></script>
+    <script src="/js/highcharts/code/modules/exporting.js"></script>
+    <script src="/js/highcharts/code/modules/export-data.js"></script>
     <%--自定义的js要在head.jsp后引入，因为head.jsp中有jquery的引入,自定义的js如果要使用jquey，就需要之后引入--%>
     <script src="/js/model/purchasebillitem.js"></script>
-    <%--引入easyui扩展库--%>
-    <link rel="stylesheet" href="http://www.easyui-extlib.com/Content/icons/icon-standard.css" />
-    <link rel="stylesheet" href="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.css" />
-    <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/menu/jeasyui.extensions.menu.js"></script>
-    <script src="http://www.easyui-extlib.com//Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.getColumnInfo.js"></script>
-    <script src="http://www.easyui-extlib.com/Scripts/jquery-easyui-extensions/datagrid/jeasyui.extensions.datagrid.columnToggle.js"></script>
-
     <style>
-        #editForm table tr td{
+        #editForm table tr td {
             padding: 3px;
         }
-        .datagrid-row-selected{
-            background-color:#0092DC;
+        .datagrid-row-selected {
+            background-color: #0092DC;
         }
     </style>
 </head>
-<body oncontextmenu="doNothing()">
-<table id="purchasebillitemGrid" class="easyui-datagrid" fit="true"
-       data-options="url:'/purchasebillitem/findPage',fitColumns:true,
-       singleSelect:false,checkOnSelect:true,onRowContextMenu:showMenu,
-       pagination:true,toolbar:'#gridTolls',enableHeaderClickMenu:'true'">
-    <thead>
-        <tr>
-            <th data-options="field:'',checkbox:true,width:50,checkbox:true" align="center"></th>
-                                            <th data-options="field:'price',width:100" align="center">price</th>
-                                            <th data-options="field:'num',width:100" align="center">num</th>
-                                            <th data-options="field:'amount',width:100" align="center">amount</th>
-                                            <th data-options="field:'descs',width:100" align="center">descs</th>
-                                            <th data-options="field:'productId',width:100" align="center">productId</th>
-                                            <th data-options="field:'billId',width:100" align="center">billId</th>
-                    </tr>
-    </thead>
-</table>
+<body>
+<table id="purchasebillitemGrid"></table>
 <%--datagrid顶部工具栏--%>
-<div id="gridTolls" style="padding:5px;height:auto">
-    <%--操作按钮--%>
-    <div style="margin-bottom:5px">
-        <a href="#" data-method="add" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-        <a href="#" data-method="update" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-        <a href="#" data-method="del" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
-    </div>
+<div id="gridTools" style="padding:5px;height:auto">
     <%--搜索部分--%>
     <form id="searchForm">
-        名称: <input name="name" class="easyui-textbox" style="width:80px">
+        日期:
+        <input name="beginDate" class="easyui-datebox" style="width:120px">
+        &nbsp;-&nbsp;
+        <input name="endDate" class="easyui-datebox" style="width:120px">
+        状态:
+        <select class="easyui-combobox" name="status" panelHeight="auto" style="width: 120px;">
+            <option value="-1">作废</option>
+            <option value="0">待审</option>
+            <option value="1">已审</option>
+        </select>
+        分组:
+        <select class="easyui-combobox" name="groupBy" panelHeight="auto" style="width:120px;">
+            <option value="0">供应商</option>
+            <option value="1">采购员</option>
+            <option value="2">月份</option>
+        </select>
         <a data-method="search" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        <a data-method="chartMethod" href="#" class="easyui-linkbutton" iconCls="icon-search">查看图表</a>
     </form>
 </div>
-<%--对话框--%>
-<div id="purchasebillitemDialog" class="easyui-dialog" style="width:345px;padding-left: 35px;padding-right: 35px;padding-top: 15px;"
-     data-options="title:'编辑功能',buttons:'#editBtn',modal:true,closed:true">
-    <form id="editForm" method="post">
-        <%--当修改的时候，把id传到后台--%>
-        <input id="purchasebillitemId" type="hidden" name="id">
-        <table>
-                        <tr>
-            <td>
-                <label>price:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="price"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                        <tr>
-            <td>
-                <label>num:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="num"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                        <tr>
-            <td>
-                <label>amount:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="amount"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                        <tr>
-            <td>
-                <label>descs:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="descs"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                        <tr>
-            <td>
-                <label>productId:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="productId"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                        <tr>
-            <td>
-                <label>billId:</label>
-            </td>
-            <td>
-                <input class="easyui-validatebox" type="text" name="billId"
-                      data-options="required:true"/>
-            </td>
-        </tr>
-                </table>
-    </form>
-</div>
-<div id="editBtn">
-    <a data-method="save" href="#" class="easyui-linkbutton">保存</a>
-    <a data-method="close" href="#" class="easyui-linkbutton">关闭</a>
-</div>
-<div id="gridMenu" class="easyui-menu" style="width:80px;">
-    <div data-options="iconCls:'icon-add'">添加</div>
-    <div data-options="iconCls:'icon-edit'">修改</div>
-    <div data-options="iconCls:'icon-remove'">删除</div>
+<%--high图表框--%>
+<div id="chartDialog" class="easyui-dialog" title="功能编辑" style="width:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true">
+    <div id="container" style="height: 400px"></div>
 </div>
 </body>
 </html>
