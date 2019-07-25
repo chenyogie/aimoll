@@ -75,6 +75,8 @@ $(function () {
             $("*[data-edit] input").validatebox("enable");
             //先清空
             editForm.form("clear");
+            //清空grid中的数据
+            dg.datagrid("loadData",[]);
             purchasebillDialog.dialog("center").dialog("open");
         },
         del() {//多行删除
@@ -112,7 +114,17 @@ $(function () {
             editForm.form('submit', {
                 url: url,
                 //提交之前的操作
-                onSubmit: function () {
+                onSubmit: function (param) {
+                    //将明细中的所有数据提交到后台,遍历所有行，将数据拼接到param中
+                    var rows = dg.datagrid("getRows");
+                    for(var i=0;i<rows.length;i++){
+                        var row = rows[i];
+                        //把值放到params中去
+                        param[`items[${i}].product.id`] = row.product.id;
+                        param[`items[${i}].num`] = row.num;
+                        param[`items[${i}].price`] = row.price;
+                        param[`items[${i}].descs`] = row.descs;
+                    }
                     return $(this).form('validate');
                 },
                 //提交完成后，接收后台返回的数据，并操作
@@ -140,14 +152,22 @@ $(function () {
                 //禁用密码框，并让其失效
                 $("*[data-edit]").hide();
                 $("*[data-edit] input").validatebox("disable");
-                //解决部门不能回显的问题
-                if (row.department) {
-                    //row对象增加一个department.id的属性
-                    row['department.id'] = row.department.id;
+                //回显
+                // 供应商
+                if(row.supplier){
+                    row["supplier.id"] = row.supplier.id;
+                }
+                // 采购员
+                if(row.buyer){
+                    row["buyer.id"] = row.buyer.id;
                 }
                 //数据回显
                 editForm.form("load", row);
                 purchasebillDialog.dialog("center").dialog("open");
+
+                //拿到这行数据中的items(明细)进行回显
+                var items = [...row.items];
+                dg.datagrid("loadData",items);
             }
         },
         search() {
@@ -162,32 +182,6 @@ $(function () {
             purchasebillDialog.dialog("close");
         }
     };
-
-    /**
-     * 双击单元格的时候，直接编辑该单元格的字段的内容
-     */
-    purchasebillGrid.datagrid({
-        onDblClickCell:function (index, field, value) {
-            purchasebillGrid.datagrid('beginEdit', index);
-            let ed = purchasebillGrid.datagrid('getEditor', {index:index,field:field});
-            $(ed.target).focus();
-        }
-        /*//双击行的时候修改当前条数据
-        onDblClickRow: function (index, row) {
-            editForm.form("clear");
-            //禁用密码框，并让其失效
-            $("*[data-edit]").hide();
-            $("*[data-edit] input").validatebox("disable");
-            //解决部门不能回显的问题
-            if (row.department) {
-                //row对象增加一个department.id的属性
-                row['department.id'] = row.department.id;
-            }
-            //数据回显
-            editForm.form("load", row);
-            purchasebillDialog.dialog("center").dialog("open");
-        }*/
-    });
 
     //绑定相应的事件 : 与右键菜单冲突
     $(window).keydown(function (event) {
@@ -207,73 +201,72 @@ $(function () {
 
     //获取控件
     var dg = $("#gridItems"),
-        defaultRow = { product: "", productColor: "", productImage: "", num: 0, price: 0, amount: 0, descs: "" },
+        defaultRow = { id: "", product: "", productColor: "", productImg: "", num: 0, price: 0, amount: 0,descs:"" },
         insertPosition = "bottom";
-
+    //明细的grid组件的初始化设置
     var dgInit = function () {
+        //datagrid的列数据
         var getColumns = function () {
             var result = [];
+
             var normal = [
                 {
-                    field: 'product', title: '产品', width: 120,
+                    field: 'product', title: '商品', width: 180,
                     editor: {
                         type: "combobox",
                         options: {
                             valueField:'id',
                             textField:'name',
-                            panelHeight:'auto',
+                            panelHeight:"auto",
                             url:'/util/findProduct',
                             required: true
                         }
                     },
-                    formatter:function (value, row) {
-                        return value.name;
+                    formatter(v,r,i){
+                        return v?v.name:"";
                     }
                 },
                 {
                     field: 'productColor', title: '颜色', width: 80,
-                    formatter:function (value, row) {
-                        if(row && row.product){
-                            console.log("=======================");
-                            console.log(value);
-                            console.log(row);
-                            return "<div style='width: 20px;height: 20px; background-color: "+row.product.color+"'></div>";
+                    formatter(v,r,i){
+                        if(r && r.product){
+                            return `<div style='width: 20px;height: 20px;background-color:${r.product.color}'></div>`;
                         }
                     }
                 },
                 {
-                    field: 'productImage', title: '图片', width: 80,
-                    formatter:function(value,row){
-                        console.debug(row);
-                        if(row && row.product){
-                            return "<img height='40px' src='"+row.product.smallpic+"'>";
+                    field: 'productImg', title: '图片', width: 100,
+                    formatter(v,r,i){
+                        if(r && r.product){
+                            return  `<img src='${r.product.smallpic}' width="50px" height="50px" alt='没有图片' />`;
                         }
                     }
                 },
                 {
-                    field: 'num', title: '数量', width: 80,
+                    field: 'num', title: '数量', width: 100,
                     editor: {
                         type: "numberbox",
                         options: {
+                            precision:2,
                             required: true
                         }
                     }
                 },
                 {
-                    field: 'price', title: '价格', width: 80,
+                    field: 'price', title: '价格', width: 100,
                     editor: {
                         type: "numberbox",
                         options: {
+                            precision:2,
                             required: true
                         }
                     }
                 },
                 {
-                    field: 'amount', title: '小计', width: 80,
-                    formatter:function(value,row){
-                        if(row.num && row.price){
-                            var amount = (row.num * row.price).toFixed(2);
-                            return amount;
+                    field: 'amount', title: '小计', width: 100,
+                    formatter(v,r,i){
+                        if(r && r.num && r.price){
+                            return (r.num * r.price).toFixed(2);
                         }
                         return 0;
                     }
@@ -285,63 +278,54 @@ $(function () {
                     }
                 }
             ];
-
-
             result.push(normal);
 
             return result;
         };
-        //设置datagrid的属性
+        //准备datagrid组件中的属性
         var options = {
-            title:"明细编辑",
-            idField: "ID",
-            rownumbers: true,
-            fitColumns: true,
-            //fit: true,
-            //border: false,
-            //按钮
-            toolbar:"#itemBtns",
-            //高度
-            height:300,
-            //单列选中
+            idField: "ID", //id的字段(唯一的)
+            rownumbers: true, // 行号
+            fitColumns: true, //列的自适应
+            fit: true, //自适应咱们的父窗口
+            border: true, //是否显示边框
             singleSelect: true,
             columns: getColumns(),
+            toolbar:"#itemsTools",
+            bodyCls:"bodyCls",
             //表示开启单元格编辑功能
             enableCellEdit: true
-
         };
-
-        //使用设置
+        //创建datagrid组件
         dg.datagrid(options);
-
     };
 
-    //获取插入的行的索引
+    //拿到插入的那一行数据的索引
     var getInsertRowIndex = function () {
         return insertPosition == "top" ? 0 : dg.datagrid("getRows").length;
     }
 
-    //绑定事件
+    //定义了一个变量,这个变量也是一个方法
     var buttonBindEvent = function () {
-        //添加一行
+        //添加一行数据
         $("#btnInsert").click(function () {
             var targetIndex = getInsertRowIndex(), targetRow = $.extend({}, defaultRow, { ID: $.util.guid() });
             dg.datagrid("insertRow", { index: targetIndex, row: targetRow });
-            //哪一行的哪一列要进行编辑
-            dg.datagrid("editCell", { index: targetIndex, field: "product" });
+            dg.datagrid("editCell", { index: 0, field: "Code" });
         });
-        //删除一行
-        $("#btnRemove").click(function () {
-            var row = dg.datagrid("getSelected");
-            //拿到对应的行
-            var index = dg.datagrid("getRowIndex",row);
-            //删除这一行
-            dg.datagrid("deleteRow",index);
 
+        //删除一行数据
+        $("#btnRemove").click(function () {
+            //1.获取到选中的行(这一行的数据)
+            var row = dg.datagrid("getSelected");
+            if(row){
+                var index = dg.datagrid("getRowIndex",row);
+                dg.datagrid("deleteRow",index);
+            }
         });
     };
 
-    //调用方法
+    //把grid初始化与事务绑定完成
     dgInit();
     buttonBindEvent();
 

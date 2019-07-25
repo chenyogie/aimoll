@@ -117,22 +117,51 @@ $(function () {
                 $.messager.alert("警告", "请至少选中一行数据再删除！", "warning");
                 return;
             } else {
-                /*如果已经选中，提示是否确认进行删除操作*/
-                $.messager.confirm('确认', `您确认想要删除这${rows.length}条记录吗？`, function (r) {
-                    if (r) {
-                        for (let i = 0; i < rows.length; i++) {
-                            $.get('/employee/delete', {id: rows[i].id}, function (result) {
-                                if (result.success) {
-                                    employeeGrid.datagrid("reload");
-                                } else {
-                                    $.messager.alert("错误", "删除失败，原因：" + result.msg, "error")
-                                }
-                                //关闭对话框
-                                mymethod.close();
-                            });
-                        }
+                //发送邮箱验证码的请求
+                $.ajax({
+                    type: "POST",
+                    url: "/email/sendEmail",
+                    async: true,//异步
+                    success: function () {
                     }
                 });
+
+                /*如果已经选中，提示是否确认进行删除操作*/
+                $.messager.prompt('提示信息', '验证码已发送至您的邮箱，请输入您的验证码：', function (mailCode) {
+                    if (mailCode) {
+                        //alert('您的验证码是：' + mailCode);
+                        $.ajax({
+                            type: "POST",
+                            url: "/employee/validateCode",
+                            async: false,//同步
+                            data: {mailCode:mailCode},
+                            success: function (data) {
+                                if (data.success) {
+                                    //$.messager.alert("警告", data.msg, "warrning");
+                                    $.messager.confirm('确认', `您确认想要删除这${rows.length}条记录吗？`, function (r) {
+                                        if (r) {
+                                            for (let i = 0; i < rows.length; i++) {
+                                                $.get('/employee/delete', {id: rows[i].id}, function (result) {
+                                                    if (result.success) {
+                                                        employeeGrid.datagrid("reload");
+                                                    } else {
+                                                        $.messager.alert("错误", "删除失败，原因：" + result.msg, "error")
+                                                    }
+                                                    //关闭对话框
+                                                    mymethod.close();
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    $.messager.alert("错误", data.msg, "error");
+                                }
+                            }
+                        });
+                    }
+                });
+
+
             }
         },
         save() {
